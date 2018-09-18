@@ -23,9 +23,6 @@ Update system packages and ensure virtualenv is installed:
     $ sudo apt-get update
     $ sudo apt-get -y install python-virtualenv
 
-Make sure the local Dash daemon running is at least version 12.1 (120100)
-
-    $ dash-cli getinfo | grep version
 
 ### 2. Install Sentinel
 
@@ -57,7 +54,7 @@ With all tests passing and crontab setup, Sentinel will stay in sync with dashd 
 
 An alternative (non-default) path to the `dash.conf` file can be specified in `sentinel.conf`:
 
-    dash_conf=/path/to/dash.conf
+    dash_conf=/path/to/zeroone.conf
 
 ## Troubleshooting
 
