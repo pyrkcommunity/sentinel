@@ -27,7 +27,8 @@ Update system packages and ensure virtualenv is installed:
 ### 2. Install Sentinel
 
 Clone the Sentinel repo and install Python dependencies.
-
+    
+    $ export LC_ALL="en_US.UTF-8" && export LC_CTYPE="en_US.UTF-8"
     $ git clone https://github.com/zocteam/sentinel.git && cd sentinel
     $ virtualenv ./venv
     $ ./venv/bin/pip install -r requirements.txt
