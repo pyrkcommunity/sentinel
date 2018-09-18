@@ -28,7 +28,7 @@ Update system packages and ensure virtualenv is installed:
 
 Clone the Sentinel repo and install Python dependencies.
 
-    $ git clone https://github.com/dashpay/sentinel.git && cd sentinel
+    $ git clone https://github.com/zocteam/sentinel.git && cd sentinel
     $ virtualenv ./venv
     $ ./venv/bin/pip install -r requirements.txt
 
@@ -48,11 +48,11 @@ Test the config by running all tests from the sentinel folder you cloned into
 
     $ ./venv/bin/py.test ./test
 
-With all tests passing and crontab setup, Sentinel will stay in sync with dashd and the installation is complete
+With all tests passing and crontab setup, Sentinel will stay in sync with zerooned and the installation is complete
 
 ## Configuration
 
-An alternative (non-default) path to the `dash.conf` file can be specified in `sentinel.conf`:
+An alternative (non-default) path to the `zeroone.conf` file can be specified in `sentinel.conf`:
 
     dash_conf=/path/to/zeroone.conf
 
