@@ -10,6 +10,10 @@ This guide covers installing Sentinel onto an existing Masternode in Ubuntu 14.0
 
 ## Installation
 
+The following detailed sessions are all condensed in ONE line command that you can take advantage if your 01coin Masternode was also previously installed using the suggested 01coin community provided scripts (the script requires you have sudo/root password).
+
+    wget https://raw.githubusercontent.com/zocteam/sentinel/master/sentinel-one-line-installer.sh && chmod +x sentinel-one-line-installer.sh && ./sentinel-one-line-installer.sh
+
 ### 1. Install Prerequisites
 
 Make sure Python version 2.7.x or above is installed:
