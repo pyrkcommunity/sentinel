@@ -1,8 +1,6 @@
 # 01Coin Sentinel
 
-An all-powerful toolset for Dash.
-
-[![Build Status](https://travis-ci.org/dashpay/sentinel.svg?branch=master)](https://travis-ci.org/dashpay/sentinel)
+An all-powerful toolset for 01coin.
 
 Sentinel is an autonomous agent for persisting, processing and automating 01coin governance objects and tasks, and for expanded functions in the upcoming 01coin releases.
 
