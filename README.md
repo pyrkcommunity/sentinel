@@ -1,12 +1,12 @@
-# Dash Sentinel
+# 01Coin Sentinel
 
 An all-powerful toolset for Dash.
 
 [![Build Status](https://travis-ci.org/dashpay/sentinel.svg?branch=master)](https://travis-ci.org/dashpay/sentinel)
 
-Sentinel is an autonomous agent for persisting, processing and automating Dash governance objects and tasks, and for expanded functions in the upcoming Dash V13 release (Evolution).
+Sentinel is an autonomous agent for persisting, processing and automating 01coin governance objects and tasks, and for expanded functions in the upcoming 01coin releases.
 
-Sentinel is implemented as a Python application that binds to a local version 12 dashd instance on each Dash Masternode.
+Sentinel is implemented as a Python application that binds to a local version 12 zerooned instance on each 01coin Masternode.
 
 This guide covers installing Sentinel onto an existing Masternode in Ubuntu 14.04 / 16.04.
 
@@ -21,7 +21,7 @@ Make sure Python version 2.7.x or above is installed:
 Update system packages and ensure virtualenv is installed:
 
     $ sudo apt-get update
-    $ sudo apt-get -y install python-virtualenv
+    $ sudo apt-get -y install python-virtualenv virtualenv
 
 
 ### 2. Install Sentinel
@@ -39,9 +39,9 @@ Set up a crontab entry to call Sentinel every minute:
 
     $ crontab -e
 
-In the crontab editor, add the lines below, replacing '/home/YOURUSERNAME/sentinel' to the path where you cloned sentinel to:
+In the crontab editor, add the lines below, replacing '$HOME/sentinel' to the path where you cloned sentinel to:
 
-    * * * * * cd /home/YOURUSERNAME/sentinel && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1
+    * * * * * cd $HOME/sentinel && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1
 
 ### 4. Test the Configuration
 
@@ -55,7 +55,7 @@ With all tests passing and crontab setup, Sentinel will stay in sync with zeroon
 
 An alternative (non-default) path to the `zeroone.conf` file can be specified in `sentinel.conf`:
 
-    dash_conf=/path/to/zeroone.conf
+    zeroone_conf=/path/to/zeroone.conf
 
 ## Troubleshooting
 
@@ -83,4 +83,5 @@ Specifically:
 
 ### License
 
-Released under the MIT license, under the same terms as DashCore itself. See [LICENSE](LICENSE) for more info.
+Released under the MIT license, under the same terms as 01coin itself. See [LICENSE](LICENSE) for more info.
+This sw was forked from DashCore and follows the same terms.
