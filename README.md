@@ -2,15 +2,15 @@
 
 An all-powerful toolset for 01coin.
 
-Sentinel is an autonomous agent for persisting, processing and automating 01coin governance objects and tasks, and for expanded functions in the upcoming 01coin releases.
+Sentinel is an autonomous agent for persisting, processing and automating 01coin governance objects and tasks, and for expanded functions in upcoming 01coin releases.
 
-Sentinel is implemented as a Python application that binds to a local version 12 zerooned instance on each 01coin Masternode.
+Sentinel is implemented as a Python application that binds to a local version 0.12.3 zerooned instance on each 01coin Masternode.
 
 This guide covers installing Sentinel onto an existing Masternode in Ubuntu 14.04 / 16.04.
 
 ## Installation
 
-The following detailed sessions are all condensed in ONE line command that you can take advantage if your 01coin Masternode was also previously installed using the suggested 01coin community provided scripts (the script requires you have sudo/root password).
+The following detailed steps are all condensed into ONE easy command that you can take advantage of if your 01coin Masternode was  previously installed using the scripts provided by the 01coin community (NB: the script requires you have sudo/root password), or manually using the same installation method as the scripts.
 
     wget https://raw.githubusercontent.com/zocteam/sentinel/master/sentinel-one-line-installer.sh && chmod +x sentinel-one-line-installer.sh && ./sentinel-one-line-installer.sh
 
@@ -30,8 +30,7 @@ Update system packages and ensure virtualenv is installed:
 
 Clone the Sentinel repo and install Python dependencies.
     
-    $ export LC_ALL="en_US.UTF-8" && export LC_CTYPE="en_US.UTF-8"
-    $ git clone https://github.com/zocteam/sentinel.git && cd sentinel
+    $ git clone https://github.com/zocteam/sentinel.git zoc_sentinel && cd zoc_sentinel
     $ virtualenv ./venv
     $ ./venv/bin/pip install -r requirements.txt
 
@@ -43,7 +42,7 @@ Set up a crontab entry to call Sentinel every minute:
 
 In the crontab editor, add the lines below, replacing '$HOME/sentinel' to the path where you cloned sentinel to:
 
-    * * * * * cd $HOME/sentinel && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1
+    * * * * * cd $HOME/zoc_sentinel && SENTINEL_DEBUG=1 ./venv/bin/python bin/sentinel.py >> zoc_sentinel.log >/dev/null 2>&1
 
 ### 4. Test the Configuration
 
