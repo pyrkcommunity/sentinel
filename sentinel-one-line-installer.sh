@@ -13,6 +13,6 @@ virtualenv ./venv
 ./venv/bin/pip install -r requirements.txt
 
 crontab -l > mycron
-echo "* * * * * cd $(pwd) && SENTINEL_DEBUG=1 ./venv/bin/python bin/sentinel.py >> sentinel.log >/dev/null 2>&1" >> mycron
+echo "* * * * * cd $(pwd) && SENTINEL_DEBUG=1 ./venv/bin/python bin/sentinel.py >> zoc_sentinel.log >/dev/null 2>&1" >> mycron
 crontab mycron
 rm mycron
