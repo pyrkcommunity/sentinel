@@ -20,7 +20,7 @@ import misc
 pr = Proposal(
     name='proposal7',
     url='https://zeroonecentral.com/proposal7',
-    payment_address='yTC62huR4YQEPn9AJHjnQxxreHSbgAoatV',
+    payment_address='nF3PndkR4vttZKUpYdYQjDCCrfsfhNGs6A',
     payment_amount=39.23,
     start_epoch=1483250400,
     end_epoch=1491022800,
