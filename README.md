@@ -58,6 +58,12 @@ An alternative (non-default) path to the `zeroone.conf` file can be specified in
 
     zeroone_conf=/path/to/zeroone.conf
 
+## Building
+
+Install pyinstaller `pip install pyinstaller`
+
+Generate output EXE/ELF: `pyinstaller --onefile --paths=lib/ main.py`
+
 ## Troubleshooting
 
 To view debug output, set the `SENTINEL_DEBUG` environment variable to anything non-zero, then run the script manually:
@@ -66,11 +72,11 @@ To view debug output, set the `SENTINEL_DEBUG` environment variable to anything 
 
 ## Contributing
 
-Please follow the [DashCore guidelines for contributing](https://github.com/dashpay/dash/blob/master/CONTRIBUTING.md).
+Please follow the [ZeroOneCore guidelines for contributing](https://github.com/zocteam/zeroonecoin/blob/master/CONTRIBUTING.md).
 
 Specifically:
 
-* [Contributor Workflow](https://github.com/dashpay/dash/blob/master/CONTRIBUTING.md#contributor-workflow)
+* [Contributor Workflow](https://github.com/zocteam/zeroonecoin/blob/master/CONTRIBUTING.md#contributor-workflow)
 
     To contribute a patch, the workflow is as follows:
 
