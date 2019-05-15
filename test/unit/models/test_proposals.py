@@ -283,7 +283,7 @@ def test_proposal_is_expired(proposal):
 
 # deterministic ordering
 def test_approved_and_ranked(go_list_proposals):
-    from zeroooned import ZeroOneDaemon
+    from zerooned import ZeroOneDaemon
     zerooned = ZeroOneDaemon.from_zeroone_conf(config.zeroone_conf)
 
     for item in go_list_proposals:

@@ -259,7 +259,7 @@ def test_superblock_size_limit(go_list_proposals):
     prop_list = Proposal.approved_and_ranked(proposal_quorum=1, next_superblock_max_budget=max_budget)
 
     maxgovobjdatasize = 469
-    sb = dashlib.create_superblock(prop_list, 72000, max_budget, misc.now(), maxgovobjdatasize)
+    sb = zeroonelib.create_superblock(prop_list, 72000, max_budget, misc.now(), maxgovobjdatasize)
 
     # two proposals in the list, but...
     assert len(prop_list) == 2

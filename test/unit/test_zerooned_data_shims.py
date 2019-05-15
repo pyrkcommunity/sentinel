@@ -108,10 +108,10 @@ def test_extract_object():
     expected = {
         'type': 1,
         'name': 'jack-sparrow-new-ship',
-        'url': 'https://www.zoccentral.org/black-pearl',
+        'url': 'https://www.dashcentral.org/black-pearl',
         'start_epoch': 1521429194,
         'end_epoch': 1547183994,
-        'payment_address': 'nS2TR1yaHMyDnB7GkssXrKiuQJmd1TwEQS',
+        'payment_address': 'yYe8KwyaUu5YswSYmB3q3ryx8XTUu9y7Ui',
         'payment_amount': Decimal('49'),
     }
 
