@@ -206,8 +206,7 @@ def process_args():
 
     return args
 
-
-if __name__ == '__main__':
+def entrypoint():
     atexit.register(cleanup)
     signal.signal(signal.SIGINT, signal_handler)
 
@@ -227,3 +226,7 @@ if __name__ == '__main__':
     main()
 
     Transient.delete(mutex_key)
+
+
+if __name__ == '__main__':
+    entrypoint()
