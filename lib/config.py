@@ -21,6 +21,10 @@ def get_argparse():
     parser.add_argument('--rpc-port', type=int, required=False)
     parser.add_argument('--repair', action='store_true', default=False, required=False)
     parser.add_argument('--sentinel', action='store_true', default=False, required=False)
+    parser.add_argument('-b', '--bypass-scheduler',
+                        action='store_true', default=False, required=False,
+                        help='Bypass scheduler and sync/vote immediately',
+                        dest='bypass')
     return parser
 
 def get_args():
