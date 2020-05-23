@@ -1,5 +1,5 @@
 """
-zerooned JSONRPC interface
+pyrkd JSONRPC interface
 """
 import sys
 import os
@@ -13,7 +13,7 @@ from decimal import Decimal
 import time
 
 
-class ZeroOneDaemon():
+class PyrkDaemon():
     def __init__(self, **kwargs):
         host = kwargs.get('host', '127.0.0.1')
         user = kwargs.get('user')
@@ -22,7 +22,7 @@ class ZeroOneDaemon():
 
         self.creds = (user, password, host, port)
 
-        # memoize calls to some zerooned methods
+        # memoize calls to some pyrkd methods
         self.governance_info = None
         self.gobject_votes = {}
 
@@ -31,10 +31,10 @@ class ZeroOneDaemon():
         return AuthServiceProxy("http://{0}:{1}@{2}:{3}".format(*self.creds))
 
     @classmethod
-    def from_zeroone_conf(self, zeroone_dot_conf):
-        from zeroone_config import ZeroOneConfig
-        config_text = ZeroOneConfig.slurp_config_file(zeroone_dot_conf)
-        creds = ZeroOneConfig.get_rpc_creds(config_text, config.network)
+    def from_pyrk_conf(self, pyrk_dot_conf):
+        from pyrk_config import PyrkConfig
+        config_text = PyrkConfig.slurp_config_file(pyrk_dot_conf)
+        creds = PyrkConfig.get_rpc_creds(config_text, config.network)
 
         creds[u'host'] = config.rpc_host
 
@@ -50,7 +50,7 @@ class ZeroOneDaemon():
         return [Masternode(k, v) for (k, v) in mnlist.items()]
 
     def get_current_masternode_vin(self):
-        from zeroonelib import parse_masternode_status_vin
+        from pyrklib import parse_masternode_status_vin
 
         my_vin = None
 
@@ -129,7 +129,7 @@ class ZeroOneDaemon():
     # "my" votes refers to the current running masternode
     # memoized on a per-run, per-object_hash basis
     def get_my_gobject_votes(self, object_hash):
-        import zeroonelib
+        import pyrklib
         if not self.gobject_votes.get(object_hash):
             my_vin = self.get_current_masternode_vin()
             # if we can't get MN vin from output of `masternode status`,
@@ -141,7 +141,7 @@ class ZeroOneDaemon():
 
             cmd = ['gobject', 'getcurrentvotes', object_hash, txid, vout_index]
             raw_votes = self.rpc_command(*cmd)
-            self.gobject_votes[object_hash] = zeroonelib.parse_raw_votes(raw_votes)
+            self.gobject_votes[object_hash] = pyrklib.parse_raw_votes(raw_votes)
 
         return self.gobject_votes[object_hash]
 
@@ -165,11 +165,11 @@ class ZeroOneDaemon():
         return (current_height >= maturity_phase_start_block)
 
     def we_are_the_winner(self):
-        import zeroonelib
+        import pyrklib
         # find the elected MN vin for superblock creation...
         current_block_hash = self.current_block_hash()
         mn_list = self.get_masternodes()
-        winner = zeroonelib.elect_mn(block_hash=current_block_hash, mnlist=mn_list)
+        winner = pyrklib.elect_mn(block_hash=current_block_hash, mnlist=mn_list)
         my_vin = self.get_current_masternode_vin()
 
         # print "current_block_hash: [%s]" % current_block_hash
@@ -179,7 +179,7 @@ class ZeroOneDaemon():
         return (winner == my_vin)
 
     def estimate_block_time(self, height):
-        import zeroonelib
+        import pyrklib
         """
         Called by block_height_to_epoch if block height is in the future.
         Call `block_height_to_epoch` instead of this method.
@@ -192,7 +192,7 @@ class ZeroOneDaemon():
         if (diff < 0):
             raise Exception("Oh Noes.")
 
-        future_seconds = zeroonelib.blocks_to_seconds(diff)
+        future_seconds = pyrklib.blocks_to_seconds(diff)
         estimated_epoch = int(time.time() + future_seconds)
 
         return estimated_epoch
@@ -220,7 +220,7 @@ class ZeroOneDaemon():
     @property
     def has_sentinel_ping(self):
         getinfo = self.rpc_command('getinfo')
-        return (getinfo['protocolversion'] >= config.min_zerooned_proto_version_with_sentinel_ping)
+        return (getinfo['protocolversion'] >= config.min_pyrkd_proto_version_with_sentinel_ping)
 
     def ping(self):
         self.rpc_command('sentinelping', config.sentinel_version)
