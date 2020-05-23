@@ -6,13 +6,13 @@ sys.path.append(os.path.normpath(os.path.join(os.path.dirname(__file__), '../../
 
 
 @pytest.fixture
-def valid_zeroone_address(network='mainnet'):
-    return 'nTTBmPNYgrnts3xSgTjbCccqig932dDBNN' if (network == 'testnet') else 'ZbNS4ZinaEKqw2Yn58JipMG15R7BMH9462'
+def valid_pyrk_address(network='mainnet'):
+    return 'PK6qz8xFz5EYLy1wxD2v1xmpFHPK5yQCgh' if (network == 'testnet') else 'ZbNS4ZinaEKqw2Yn58JipMG15R7BMH9462'
 
 
 @pytest.fixture
-def invalid_zeroone_address(network='mainnet'):
-    return 'nTTBmPNYgrnts3xSgTjbCccqig932dDBNM' if (network == 'testnet') else 'ZbNS4ZinaEKqw2Yn58JipMG15R7BMH9463'
+def invalid_pyrk_address(network='mainnet'):
+    return 'PK6qz8xFz5EYLy1wxD2v1xmpFHPK5yQCgh' if (network == 'testnet') else 'ZbNS4ZinaEKqw2Yn58JipMG15R7BMH9463'
 
 
 @pytest.fixture
@@ -64,34 +64,34 @@ def mn_status_bad():
 # ========================================================================
 
 
-def test_valid_zeroone_address():
-    from zeroonelib import is_valid_zeroone_address
+def test_valid_pyrk_address():
+    from pyrklib import is_valid_pyrk_address
 
-    main = valid_zeroone_address()
-    test = valid_zeroone_address('testnet')
+    main = valid_pyrk_address()
+    test = valid_pyrk_address('testnet')
 
-    assert is_valid_zeroone_address(main) is True
-    assert is_valid_zeroone_address(main, 'mainnet') is True
-    assert is_valid_zeroone_address(main, 'testnet') is False
+    assert is_valid_pyrk_address(main) is True
+    assert is_valid_pyrk_address(main, 'mainnet') is True
+    assert is_valid_pyrk_address(main, 'testnet') is False
 
-    assert is_valid_zeroone_address(test) is False
-    assert is_valid_zeroone_address(test, 'mainnet') is False
-    assert is_valid_zeroone_address(test, 'testnet') is True
+    assert is_valid_pyrk_address(test) is False
+    assert is_valid_pyrk_address(test, 'mainnet') is False
+    assert is_valid_pyrk_address(test, 'testnet') is True
 
 
-def test_invalid_zeroone_address():
-    from zeroonelib import is_valid_zeroone_address
+def test_invalid_pyrk_address():
+    from pyrklib import is_valid_pyrk_address
 
-    main = invalid_zeroone_address()
-    test = invalid_zeroone_address('testnet')
+    main = invalid_pyrk_address()
+    test = invalid_pyrk_address('testnet')
 
-    assert is_valid_zeroone_address(main) is False
-    assert is_valid_zeroone_address(main, 'mainnet') is False
-    assert is_valid_zeroone_address(main, 'testnet') is False
+    assert is_valid_pyrk_address(main) is False
+    assert is_valid_pyrk_address(main, 'mainnet') is False
+    assert is_valid_pyrk_address(main, 'testnet') is False
 
-    assert is_valid_zeroone_address(test) is False
-    assert is_valid_zeroone_address(test, 'mainnet') is False
-    assert is_valid_zeroone_address(test, 'testnet') is False
+    assert is_valid_pyrk_address(test) is False
+    assert is_valid_pyrk_address(test, 'mainnet') is False
+    assert is_valid_pyrk_address(test, 'testnet') is False
 
 
 def test_deterministic_masternode_elections(current_block_hash, mn_list):
@@ -103,7 +103,7 @@ def test_deterministic_masternode_elections(current_block_hash, mn_list):
 
 
 def test_deterministic_masternode_elections(current_block_hash, mn_list):
-    from zeroonelib import elect_mn
+    from pyrklib import elect_mn
 
     winner = elect_mn(block_hash=current_block_hash, mnlist=mn_list)
     assert winner == 'f68a2e5d64f4a9be7ff8d0fbd9059dcd3ce98ad7a19a9260d1d6709127ffac56-1'
@@ -113,7 +113,7 @@ def test_deterministic_masternode_elections(current_block_hash, mn_list):
 
 
 def test_parse_masternode_status_vin():
-    from zeroonelib import parse_masternode_status_vin
+    from pyrklib import parse_masternode_status_vin
     status = mn_status_good()
     vin = parse_masternode_status_vin(status['vin'])
     assert vin == 'f68a2e5d64f4a9be7ff8d0fbd9059dcd3ce98ad7a19a9260d1d6709127ffac56-1'
@@ -124,20 +124,20 @@ def test_parse_masternode_status_vin():
 
 
 def test_hash_function():
-    import zeroonelib
+    import pyrklib
     sb_data_hex = '7b226576656e745f626c6f636b5f686569676874223a2037323639362c20227061796d656e745f616464726573736573223a2022795965384b77796155753559737753596d42337133727978385854557539793755697c795965384b77796155753559737753596d4233713372797838585455753979375569222c20227061796d656e745f616d6f756e7473223a202232352e37353030303030307c32352e3735303030303030222c202274797065223a20327d'
     sb_hash = '7ae8b02730113382ea75cbb1eecc497c3aa1fdd9e76e875e38617e07fb2cb21a'
 
-    hex_hash = "%x" % zeroonelib.hashit(sb_data_hex)
+    hex_hash = "%x" % pyrklib.hashit(sb_data_hex)
     assert hex_hash == sb_hash
 
 
 def test_blocks_to_seconds():
-    import zeroonelib
+    import pyrklib
     from decimal import Decimal
 
     precision = Decimal('0.001')
-    assert Decimal(zeroonelib.blocks_to_seconds(0)) == Decimal(0.0)
-    assert Decimal(zeroonelib.blocks_to_seconds(2)).quantize(precision) \
+    assert Decimal(pyrklib.blocks_to_seconds(0)) == Decimal(0.0)
+    assert Decimal(pyrklib.blocks_to_seconds(2)).quantize(precision) \
         == Decimal(314.4).quantize(precision)
-    assert int(zeroonelib.blocks_to_seconds(16616)) == 2612035
+    assert int(pyrklib.blocks_to_seconds(16616)) == 2612035
