@@ -6,11 +6,11 @@ os.environ['SENTINEL_CONFIG'] = os.path.normpath(os.path.join(os.path.dirname(__
 os.environ['SENTINEL_ENV'] = 'test'
 sys.path.append(os.path.normpath(os.path.join(os.path.dirname(__file__), '../../lib')))
 import config
-from zeroone_config import ZeroOneConfig
+from pyrk_config import PyrkConfig
 
 
 @pytest.fixture
-def zeroone_conf(**kwargs):
+def pyrk_conf(**kwargs):
     defaults = {
         'rpcuser': 'zocrpc',
         'rpcpassword': 'EwJeV3fZTyTVozdECF627BkBMnNDwQaVLakG3A4wXYyk',
@@ -34,8 +34,8 @@ rpcport={rpcport}
 
 
 def test_get_rpc_creds():
-    zeroone_config = zeroone_conf()
-    creds = ZeroOneConfig.get_rpc_creds(zeroone_config, 'testnet')
+    pyrk_config = pyrk_conf()
+    creds = PyrkConfig.get_rpc_creds(pyrk_config, 'testnet')
 
     for key in ('user', 'password', 'port'):
         assert key in creds
@@ -43,8 +43,8 @@ def test_get_rpc_creds():
     assert creds.get('password') == 'EwJeV3fZTyTVozdECF627BkBMnNDwQaVLakG3A4wXYyk'
     assert creds.get('port') == 10101
 
-    zeroone_config = zeroone_conf(rpcpassword='s00pers33kr1t', rpcport=8000)
-    creds = ZeroOneConfig.get_rpc_creds(zeroone_config, 'testnet')
+    pyrk_config = pyrk_conf(rpcpassword='s00pers33kr1t', rpcport=8000)
+    creds = PyrkConfig.get_rpc_creds(pyrk_config, 'testnet')
 
     for key in ('user', 'password', 'port'):
         assert key in creds
@@ -52,8 +52,8 @@ def test_get_rpc_creds():
     assert creds.get('password') == 's00pers33kr1t'
     assert creds.get('port') == 8000
 
-    no_port_specified = re.sub('\nrpcport=.*?\n', '\n', zeroone_conf(), re.M)
-    creds = ZeroOneConfig.get_rpc_creds(no_port_specified, 'testnet')
+    no_port_specified = re.sub('\nrpcport=.*?\n', '\n', pyrk_conf(), re.M)
+    creds = PyrkConfig.get_rpc_creds(no_port_specified, 'testnet')
 
     for key in ('user', 'password', 'port'):
         assert key in creds
@@ -62,7 +62,7 @@ def test_get_rpc_creds():
     assert creds.get('port') == 10101
 
 
-# ensure zeroone network (mainnet, testnet) matches that specified in config
-# requires running zerooned on whatever port specified...
+# ensure pyrk network (mainnet, testnet) matches that specified in config
+# requires running pyrkd on whatever port specified...
 #
-# This is more of a zerooned/jsonrpc test than a config test...
+# This is more of a pyrkd/jsonrpc test than a config test...
