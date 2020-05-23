@@ -5,7 +5,7 @@ sys.path.append(os.path.normpath(os.path.join(os.path.dirname(__file__), '../lib
 import init
 import config
 import misc
-from zerooned import ZeroOneDaemon
+from pyrkd import PyrkOneDaemon
 from models import Superblock, Proposal, GovernanceObject
 from models import VoteSignals, VoteOutcomes, Transient
 import socket
@@ -20,33 +20,33 @@ import argparse
 
 # ensure another instance of Sentinel pointing at the same config
 # is not currently running
-mutex_key = 'SENTINEL_RUNNING_' + config.zeroone_conf
+mutex_key = 'SENTINEL_RUNNING_' + config.pyrk_conf
 
 
-# sync zerooned gobject list with our local relational DB backend
-def perform_zerooned_object_sync(zerooned):
-    GovernanceObject.sync(zerooned)
+# sync pyrkd gobject list with our local relational DB backend
+def perform_pyrkd_object_sync(pyrkd):
+    GovernanceObject.sync(pyrkd)
 
 
-def prune_expired_proposals(zerooned):
+def prune_expired_proposals(pyrkd):
     # vote delete for old proposals
-    for proposal in Proposal.expired(zerooned.superblockcycle()):
-        proposal.vote(zerooned, VoteSignals.delete, VoteOutcomes.yes)
+    for proposal in Proposal.expired(pyrkd.superblockcycle()):
+        proposal.vote(pyrkd, VoteSignals.delete, VoteOutcomes.yes)
 
 
-# ping zerooned
-def sentinel_ping(zerooned):
+# ping pyrkd
+def sentinel_ping(pyrkd):
     printdbg("in sentinel_ping")
 
-    zerooned.ping()
+    pyrkd.ping()
 
     printdbg("leaving sentinel_ping")
 
 
-def attempt_superblock_creation(zerooned):
-    import zeroonelib
+def attempt_superblock_creation(pyrkd):
+    import pyrklib
 
-    if not zerooned.is_masternode():
+    if not pyrkd.is_masternode():
         print("We are not a Masternode... can't submit superblocks!")
         return
 
@@ -57,7 +57,7 @@ def attempt_superblock_creation(zerooned):
     # has this masternode voted on *any* superblocks at the given event_block_height?
     # have we voted FUNDING=YES for a superblock for this specific event_block_height?
 
-    event_block_height = zerooned.next_superblock_height()
+    event_block_height = pyrkd.next_superblock_height()
 
     if Superblock.is_voted_funding(event_block_height):
         # printdbg("ALREADY VOTED! 'til next time!")
@@ -65,21 +65,21 @@ def attempt_superblock_creation(zerooned):
         # vote down any new SBs because we've already chosen a winner
         for sb in Superblock.at_height(event_block_height):
             if not sb.voted_on(signal=VoteSignals.funding):
-                sb.vote(zerooned, VoteSignals.funding, VoteOutcomes.no)
+                sb.vote(pyrkd, VoteSignals.funding, VoteOutcomes.no)
 
         # now return, we're done
         return
 
-    if not zerooned.is_govobj_maturity_phase():
+    if not pyrkd.is_govobj_maturity_phase():
         printdbg("Not in maturity phase yet -- will not attempt Superblock")
         return
 
-    proposals = Proposal.approved_and_ranked(proposal_quorum=zerooned.governance_quorum(), next_superblock_max_budget=zerooned.next_superblock_max_budget())
-    budget_max = zerooned.get_superblock_budget_allocation(event_block_height)
-    sb_epoch_time = zerooned.block_height_to_epoch(event_block_height)
+    proposals = Proposal.approved_and_ranked(proposal_quorum=pyrkd.governance_quorum(), next_superblock_max_budget=pyrkd.next_superblock_max_budget())
+    budget_max = pyrkd.get_superblock_budget_allocation(event_block_height)
+    sb_epoch_time = pyrkd.block_height_to_epoch(event_block_height)
 
-    maxgovobjdatasize = zerooned.govinfo['maxgovobjdatasize']
-    sb = zeroonelib.create_superblock(proposals, event_block_height, budget_max, sb_epoch_time, maxgovobjdatasize)
+    maxgovobjdatasize = pyrkd.govinfo['maxgovobjdatasize']
+    sb = pyrklib.create_superblock(proposals, event_block_height, budget_max, sb_epoch_time, maxgovobjdatasize)
     if not sb:
         printdbg("No superblock created, sorry. Returning.")
         return
@@ -87,12 +87,12 @@ def attempt_superblock_creation(zerooned):
     # find the deterministic SB w/highest object_hash in the DB
     dbrec = Superblock.find_highest_deterministic(sb.hex_hash())
     if dbrec:
-        dbrec.vote(zerooned, VoteSignals.funding, VoteOutcomes.yes)
+        dbrec.vote(pyrkd, VoteSignals.funding, VoteOutcomes.yes)
 
         # any other blocks which match the sb_hash are duplicates, delete them
         for sb in Superblock.select().where(Superblock.sb_hash == sb.hex_hash()):
             if not sb.voted_on(signal=VoteSignals.funding):
-                sb.vote(zerooned, VoteSignals.delete, VoteOutcomes.yes)
+                sb.vote(pyrkd, VoteSignals.delete, VoteOutcomes.yes)
 
         printdbg("VOTED FUNDING FOR SB! We're done here 'til next superblock cycle.")
         return
@@ -100,24 +100,24 @@ def attempt_superblock_creation(zerooned):
         printdbg("The correct superblock wasn't found on the network...")
 
     # if we are the elected masternode...
-    if (zerooned.we_are_the_winner()):
+    if (pyrkd.we_are_the_winner()):
         printdbg("we are the winner! Submit SB to network")
-        sb.submit(zerooned)
+        sb.submit(pyrkd)
 
 
-def check_object_validity(zerooned):
+def check_object_validity(pyrkd):
     # vote (in)valid objects
     for gov_class in [Proposal, Superblock]:
         for obj in gov_class.select():
-            obj.vote_validity(zerooned)
+            obj.vote_validity(pyrkd)
 
 
-def is_zerooned_port_open(zerooned):
+def is_pyrkd_port_open(pyrkd):
     # test socket open before beginning, display instructive message to MN
     # operators if it's not
     port_open = False
     try:
-        info = zerooned.rpc_command('getgovernanceinfo')
+        info = pyrkd.rpc_command('getgovernanceinfo')
         port_open = True
     except (socket.error, JSONRPCException) as e:
         print("%s" % e)
@@ -126,21 +126,21 @@ def is_zerooned_port_open(zerooned):
 
 
 def main():
-    zerooned = ZeroOneDaemon.from_zeroone_conf(config.zeroone_conf)
+    pyrkd = PyrkDaemon.from_pyrk_conf(config.pyrk_conf)
     options = process_args()
 
-    # check zerooned connectivity
-    if not is_zerooned_port_open(zerooned):
-        print("Cannot connect to zerooned. Please ensure zerooned is running and the JSONRPC port is open to Sentinel.")
+    # check pyrkd connectivity
+    if not is_pyrkd_port_open(pyrkd):
+        print("Cannot connect to pyrkd. Please ensure pyrkd is running and the JSONRPC port is open to Sentinel.")
         return
 
-    # check zerooned sync
-    if not zerooned.is_synced():
-        print("zerooned not synced with network! Awaiting full sync before running Sentinel.")
+    # check pyrkd sync
+    if not pyrkd.is_synced():
+        print("pyrkd not synced with network! Awaiting full sync before running Sentinel.")
         return
 
     # ensure valid masternode
-    if not zerooned.is_masternode():
+    if not pyrkd.is_masternode():
         print("Invalid Masternode Status, cannot continue.")
         return
 
@@ -172,19 +172,19 @@ def main():
     # ========================================================================
     #
     # load "gobject list" rpc command data, sync objects into internal database
-    perform_zerooned_object_sync(zerooned)
+    perform_pyrkd_object_sync(pyrkd)
 
-    if zerooned.has_sentinel_ping:
-        sentinel_ping(zerooned)
+    if pyrkd.has_sentinel_ping:
+        sentinel_ping(pyrkd)
 
     # auto vote network objects as valid/invalid
-    # check_object_validity(zerooned)
+    # check_object_validity(pyrkd)
 
     # vote to delete expired proposals
-    prune_expired_proposals(zerooned)
+    prune_expired_proposals(pyrkd)
 
     # create a Superblock if necessary
-    attempt_superblock_creation(zerooned)
+    attempt_superblock_creation(pyrkd)
 
     # schedule the next run
     Scheduler.schedule_next_run()
@@ -218,7 +218,7 @@ def process_args():
 def entrypoint():
     # ensure another instance of Sentinel pointing at the same config
     # is not currently running
-    mutex_key = 'SENTINEL_RUNNING_' + config.zeroone_conf
+    mutex_key = 'SENTINEL_RUNNING_' + config.pyrk_conf
 
     atexit.register(cleanup)
     signal.signal(signal.SIGINT, signal_handler)
