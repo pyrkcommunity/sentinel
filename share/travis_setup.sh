@@ -1,9 +1,9 @@
 #!/bin/bash
 set -evx
 
-mkdir ~/.zeroonecore
+mkdir ~/.pyrk
 
 # safety check
-if [ ! -f ~/.zeroonecore/zeroone.conf ]; then
-  cp share/zeroone.conf.example ~/.zeroonecore/zeroone.conf
+if [ ! -f ~/.pyrk/pyrk.conf ]; then
+  cp share/pyrk.conf.example ~/.pyrk/pyrk.conf
 fi
