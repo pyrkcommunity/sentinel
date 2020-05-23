@@ -8,30 +8,30 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'lib'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
 import config
 
-from zerooned import ZeroOneDaemon
-from zeroone_config import ZeroOneConfig
+from pyrkd import PyrkDaemon
+from pyrk_config import PyrkConfig
 
 
-def test_zerooned():
-    config_text = ZeroOneConfig.slurp_config_file(config.zeroone_conf)
+def test_pyrkd():
+    config_text = PyrkConfig.slurp_config_file(config.pyrk_conf)
     network = 'mainnet'
     is_testnet = False
-    genesis_hash = u'00000c8e2be06ce7e6ea78cd9f6ea60e22821d70f8c8fbb714b6baa7b4f2150c'
+    genesis_hash = u'0x973814a07c1ae4f3af90372952c9b9709901a95df1d0ea54bd1b3bd6feff5b89'
     for line in config_text.split("\n"):
         if line.startswith('testnet=1'):
             network = 'testnet'
             is_testnet = True
-            genesis_hash = u'00000ebe61e5bc70bc968b9cf4e5ed85ec996a85a68853361557876ae37a1648'
+            genesis_hash = u'0x6015f9422d514ebd62d28c48b7faf86738680091d38ecb2c9bc2381b9325c13a'
 
-    creds = ZeroOneConfig.get_rpc_creds(config_text, network)
-    zerooned = ZeroOneDaemon(**creds)
-    assert zerooned.rpc_command is not None
+    creds = PyrkConfig.get_rpc_creds(config_text, network)
+    pyrkd = PyrkDaemon(**creds)
+    assert pyrkd.rpc_command is not None
 
-    assert hasattr(zerooned, 'rpc_connection')
+    assert hasattr(pyrkd, 'rpc_connection')
 
-    # ZeroOne testnet block 0 hash == 00000ebe61e5bc70bc968b9cf4e5ed85ec996a85a68853361557876ae37a1648
+    # Pyrk testnet block 0 hash == 0x6015f9422d514ebd62d28c48b7faf86738680091d38ecb2c9bc2381b9325c13a
     # test commands without arguments
-    info = zerooned.rpc_command('getinfo')
+    info = pyrkd.rpc_command('getinfo')
     info_keys = [
         'blocks',
         'connections',
@@ -48,4 +48,4 @@ def test_zerooned():
     assert info['testnet'] is is_testnet
 
     # test commands with args
-    assert zerooned.rpc_command('getblockhash', 0) == genesis_hash
+    assert pyrkd.rpc_command('getblockhash', 0) == genesis_hash
