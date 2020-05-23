@@ -17,14 +17,14 @@ import misc
 # ==============================================================================
 # do stuff here
 
-#pr = Proposal(
-#    name='proposal7',
-#    url='https://pyrkcentral.com/proposal7',
-#    payment_address='nF3PndkR4vttZKUpYdYQjDCCrfsfhNGs6A',
-#    payment_amount=39.23,
-#    start_epoch=1483250400,
-#    end_epoch=1491022800,
-#)
+pr = Proposal(
+    name='proposal7',
+    url='https://pyrkcentral.com/proposal7',
+    payment_address='PK6qz8xFz5EYLy1wxD2v1xmpFHPK5yQCgh',
+    payment_amount=42.42,
+    start_epoch=1590230222,
+    end_epoch=1600230222,
+)
 
 # sb = Superblock(
 #     event_block_height = 62500,
