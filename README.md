@@ -1,19 +1,19 @@
-# 01Coin Sentinel
+# Pyrk Sentinel
 
-An all-powerful toolset for 01coin.
+An all-powerful toolset for Pyrk.
 
-Sentinel is an autonomous agent for persisting, processing and automating 01coin governance objects and tasks, and for expanded functions in upcoming 01coin releases.
+Sentinel is an autonomous agent for persisting, processing and automating Pyrk governance objects and tasks, and for expanded functions in upcoming Pyrk releases.
 
-Sentinel is implemented as a Python application that binds to a local version 0.12.3 zerooned instance on each 01coin Masternode.
+Sentinel is implemented as a Python application that binds to a local version 0.12.3 pyrkd instance on each Pyrk Masternode.
 
 This guide covers installing Sentinel onto an existing Masternode in Ubuntu 14.04 / 16.04.
 
 
 ## Installation
 
-The following detailed steps are all condensed into ONE easy command that you can take advantage of if your 01coin Masternode was  previously installed using the scripts provided by the 01coin community (NB: the script requires you have sudo/root password), or manually using the same installation method as the scripts.
+The following detailed steps are all condensed into ONE easy command that you can take advantage of if your Pyrk Masternode was  previously installed using the scripts provided by the Pyrk community (NB: the script requires you have sudo/root password), or manually using the same installation method as the scripts.
 
-    wget https://raw.githubusercontent.com/zocteam/sentinel/master/sentinel-one-line-installer.sh && chmod +x sentinel-one-line-installer.sh && ./sentinel-one-line-installer.sh
+    wget https://raw.githubusercontent.com/pyrkcommunity/sentinel/master/sentinel-one-line-installer.sh && chmod +x sentinel-one-line-installer.sh && ./sentinel-one-line-installer.sh
 
 
 ### 1. Install Prerequisites
@@ -65,14 +65,14 @@ Test the config by running all tests from the sentinel folder you cloned into
 
     $ ./venv/bin/py.test ./test
 
-With all tests passing and crontab setup, Sentinel will stay in sync with zerooned and the installation is complete
+With all tests passing and crontab setup, Sentinel will stay in sync with pyrkd and the installation is complete
 
 
 ## Configuration
 
-An alternative (non-default) path to the `zeroone.conf` file can be specified in `sentinel.conf`:
+An alternative (non-default) path to the `pyrk.conf` file can be specified in `sentinel.conf`:
 
-    zeroone_conf=/path/to/zeroone.conf
+    pyrk_conf=/path/to/pyrk.conf
 
 
 ## Building
@@ -97,11 +97,11 @@ To view debug output, set the `SENTINEL_DEBUG` environment variable to anything 
 
 ## Contributing
 
-Please follow the [ZeroOneCore guidelines for contributing](https://github.com/zocteam/zeroonecoin/blob/master/CONTRIBUTING.md).
+Please follow the [Pyrk guidelines for contributing](https://github.com/pyrkcommunity/pyrk/blob/master/CONTRIBUTING.md).
 
 Specifically:
 
-* [Contributor Workflow](https://github.com/zocteam/zeroonecoin/blob/master/CONTRIBUTING.md#contributor-workflow)
+* [Contributor Workflow](https://github.com/pyrkcommunity/pyrk/blob/master/CONTRIBUTING.md#contributor-workflow)
 
     To contribute a patch, the workflow is as follows:
 
@@ -116,5 +116,5 @@ Specifically:
 
 ### License
 
-Released under the MIT license, under the same terms as 01coin itself. See [LICENSE](LICENSE) for more info.
+Released under the MIT license, under the same terms as Pyrk itself. See [LICENSE](LICENSE) for more info.
 This sw was forked from DashCore and follows the same terms.
