@@ -4,16 +4,16 @@
 import argparse
 import sys
 import os
-from zeroone_config import ZeroOneConfig
+from pyrk_config import PyrkOneConfig
 
 default_sentinel_config = os.path.normpath(
     os.path.join(os.path.dirname(__file__), '../sentinel.conf')
 )
 sentinel_config_file = os.environ.get('SENTINEL_CONFIG', default_sentinel_config)
-sentinel_cfg = ZeroOneConfig.tokenize(sentinel_config_file)
+sentinel_cfg = PyrkConfig.tokenize(sentinel_config_file)
 
 sentinel_version = "1.2.0"
-min_zerooned_proto_version_with_sentinel_ping = 70207
+min_pyrkd_proto_version_with_sentinel_ping = 70207
 
 def get_argparse():
     parser = argparse.ArgumentParser()
@@ -39,32 +39,32 @@ def get_args():
 
     return args
 
-def get_zeroone_conf():
+def get_pyrk_conf():
     args = get_args()
 
     if args.config:
-        zeroone_conf = args.config
+        pyrk_conf = args.config
     else:
-        zeroone_conf = ''
-        zeroone_conf = sentinel_cfg.get('zeroone_conf', zeroone_conf)
-        # print zeroone_conf
-        if not zeroone_conf:
+        pyrk_conf = ''
+        pyrk_conf = sentinel_cfg.get('pyrk_conf', pyrk_conf)
+        # print pyrk_conf
+        if not pyrk_conf:
             home = os.environ.get('HOME')
             if home is not None:
                 if sys.platform == 'darwin':
-                    zeroone_conf = os.path.join(home, "Library/Application Support/ZeroOneCore/zeroone.conf")
+                    pyrk_conf = os.path.join(home, "Library/Application Support/PyrkCore/pyrk.conf")
                 else:
-                    zeroone_conf = os.path.join(home, ".zeroonecore/zeroone.conf")
+                    pyrk_conf = os.path.join(home, ".pyrk/pyrk.conf")
             else:
             #if sys.platform == 'win32':
                 home = os.getenv('APPDATA')
                 if home is not None:
-                    zeroone_conf = os.path.join(home, "ZeroOneCore\\zeroone.conf")
+                    pyrk_conf = os.path.join(home, "PyrkCore\\pyrk.conf")
                 else:
-                    zeroone_conf = 'zeroone.conf'
+                    pyrk_conf = 'pyrk.conf'
 
 
-    return zeroone_conf
+    return pyrk_conf
 
 
 def get_network():
@@ -124,7 +124,7 @@ def get_db_conn():
     return db
 
 
-zeroone_conf = get_zeroone_conf()
+pyrk_conf = get_pyrk_conf()
 network = get_network()
 rpc_host = get_rpchost()
 db = get_db_conn()
