@@ -12,14 +12,14 @@ from misc import printdbg, epoch2str
 import time
 
 
-def is_valid_zeroone_address(address, network='mainnet'):
+def is_valid_pyrk_address(address, network='mainnet'):
     # Only public key addresses are allowed
     # A valid address is a RIPEMD-160 hash which contains 20 bytes
     # Prior to base58 encoding 1 version byte is prepended and
     # 4 checksum bytes are appended so the total number of
     # base58 encoded bytes should be 25.  This means the number of characters
     # in the encoding should be about 34 ( 25 * log2( 256 ) / log2( 58 ) ).
-    zeroone_version = 112 if network == 'testnet' else 80
+    pyrk_version = 140 if network == 'testnet' else 55
 
     # Check length (This is important because the base58 library has problems
     # with long addresses (which are invalid anyway).
@@ -35,7 +35,7 @@ def is_valid_zeroone_address(address, network='mainnet'):
         # rescue from exception, not a valid ZOC address
         return False
 
-    if (address_version != zeroone_version):
+    if (address_version != pyrk_version):
         return False
 
     return True
@@ -163,7 +163,7 @@ def create_superblock(proposals, event_block_height, budget_max, sb_epoch_time, 
             payment_amounts='|'.join([pd['amount'] for pd in payments]),
             proposal_hashes='|'.join([pd['proposal'] for pd in payments])
         )
-        data_size = len(sb_temp.zerooned_serialise())
+        data_size = len(sb_temp.pyrkd_serialise())
 
         if data_size > maxgovobjdatasize:
             printdbg("MAX_GOVERNANCE_OBJECT_DATA_SIZE limit reached!")
@@ -194,25 +194,25 @@ def create_superblock(proposals, event_block_height, budget_max, sb_epoch_time, 
 
 
 # shims 'til we can fix the JSON format
-def SHIM_serialise_for_zerooned(sentinel_hex):
+def SHIM_serialise_for_pyrkd(sentinel_hex):
     from models import GOVOBJ_TYPE_STRINGS
 
     # unpack
     obj = deserialise(sentinel_hex)
 
-    # shim for zerooned
+    # shim for pyrkd
     govtype_string = GOVOBJ_TYPE_STRINGS[obj['type']]
 
-    # superblock => "trigger" in zerooned
+    # superblock => "trigger" in pyrkd
     if govtype_string == 'superblock':
         govtype_string = 'trigger'
 
-    # zerooned expects an array (will be deprecated)
+    # pyrkd expects an array (will be deprecated)
     obj = [(govtype_string, obj,)]
 
     # re-pack
-    zerooned_hex = serialise(obj)
-    return zerooned_hex
+    pyrkd_hex = serialise(obj)
+    return pyrkd_hex
 
 
 # convenience
@@ -236,7 +236,7 @@ def did_we_vote(output):
     err_msg = ''
 
     try:
-        detail = output.get('detail').get('zeroone.conf')
+        detail = output.get('detail').get('pyrk.conf')
         result = detail.get('result')
         if 'errorMessage' in detail:
             err_msg = detail.get('errorMessage')
@@ -289,4 +289,4 @@ def blocks_to_seconds(blocks):
     Return the estimated number of seconds which will transpire for a given
     number of blocks.
     """
-    return blocks * 2.62 * 60
+    return blocks * 90
