@@ -56,23 +56,23 @@ def is_database_correctly_configured():
     return configured
 
 
-def has_zeroone_conf():
+def has_pyrk_conf():
     import config
     import io
 
-    valid_zeroone_conf = False
+    valid_pyrk_conf = False
 
-    # ensure zeroone_conf exists & readable
+    # ensure pyrk_conf exists & readable
     #
-    # if not, print a message stating that ZeroOneCore must be installed and
-    # configured, including JSONRPC access in zeroone.conf
+    # if not, print a message stating that PyrkCore must be installed and
+    # configured, including JSONRPC access in pyrk.conf
     try:
-        f = io.open(config.zeroone_conf)
-        valid_zeroone_conf = True
+        f = io.open(config.pyrk_conf)
+        valid_pyrk_conf = True
     except IOError as e:
         print(e)
 
-    return valid_zeroone_conf
+    return valid_pyrk_conf
 
 
 # === begin main
@@ -94,8 +94,8 @@ def main():
         print("Please ensure correct database configuration.")
         sys.exit(1)
 
-    if not has_zeroone_conf():
-        print("ZeroOneCore must be installed and configured, including JSONRPC access in zeroone.conf")
+    if not has_pyrk_conf():
+        print("PyrkCore must be installed and configured, including JSONRPC access in pyrk.conf")
         sys.exit(1)
 
 
