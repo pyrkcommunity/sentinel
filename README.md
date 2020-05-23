@@ -32,7 +32,7 @@ Update system packages and ensure virtualenv is installed:
 
 Clone the Sentinel repo and install Python dependencies.
     
-    $ git clone https://github.com/zocteam/sentinel.git sentinel && cd sentinel
+    $ git clone https://github.com/pyrkcommunity/sentinel.git sentinel && cd sentinel
     $ virtualenv ./venv
     $ ./venv/bin/pip install -r requirements.txt
 
