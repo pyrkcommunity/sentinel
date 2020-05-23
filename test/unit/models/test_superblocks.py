@@ -123,8 +123,8 @@ def superblock():
 
 
 def test_superblock_is_valid(superblock):
-    from zerooned import ZeroOneDaemon
-    zerooned = ZeroOneDaemon.from_zeroone_conf(config.zeroone_conf)
+    from pyrkd import PyrkDaemon
+    pyrkd = PyrkDaemon.from_pyrk_conf(config.pyrk_conf)
 
     orig = Superblock(**superblock.get_dict())  # make a copy
 
@@ -225,12 +225,12 @@ def test_serialisable_fields():
 
 
 def test_deterministic_superblock_creation(go_list_proposals):
-    import zeroonelib
+    import pyrklib
     import misc
-    from zerooned import ZeroOneDaemon
-    zerooned = ZeroOneDaemon.from_zeroone_conf(config.zeroone_conf)
+    from pyrkd import PyrkDaemon
+    pyrkd = PyrkDaemon.from_pyrk_conf(config.pyrk_conf)
     for item in go_list_proposals:
-        (go, subobj) = GovernanceObject.import_gobject_from_zerooned(zerooned, item)
+        (go, subobj) = GovernanceObject.import_gobject_from_pyrkd(pyrkd, item)
 
     max_budget = 60
     prop_list = Proposal.approved_and_ranked(proposal_quorum=1, next_superblock_max_budget=max_budget)
@@ -238,7 +238,7 @@ def test_deterministic_superblock_creation(go_list_proposals):
 
     # MAX_GOVERNANCE_OBJECT_DATA_SIZE defined in governance-object.h
     maxgovobjdatasize = 16 * 1024
-    sb = zeroonelib.create_superblock(prop_list, 72000, max_budget, misc.now(), maxgovobjdatasize)
+    sb = pyrklib.create_superblock(prop_list, 72000, max_budget, misc.now(), maxgovobjdatasize)
 
     #assert sb.event_block_height == 72000
     #assert sb.payment_addresses == 'nFr5So8SVuREU8bghTF4eZewiMuKaZ4M2t|nGSspKw2vnGQMvX3BiRLNSCD21MVXbCcwt'
@@ -248,18 +248,18 @@ def test_deterministic_superblock_creation(go_list_proposals):
 
 
 def test_superblock_size_limit(go_list_proposals):
-    import zeroonelib
+    import pyrklib
     import misc
-    from zerooned import ZeroOneDaemon
-    zerooned = ZeroOneDaemon.from_zeroone_conf(config.zeroone_conf)
+    from pyrkd import PyrkDaemon
+    pyrkd = PyrkDaemon.from_pyrk_conf(config.pyrk_conf)
     for item in go_list_proposals:
-        (go, subobj) = GovernanceObject.import_gobject_from_zerooned(zerooned, item)
+        (go, subobj) = GovernanceObject.import_gobject_from_pyrkd(pyrkd, item)
 
     max_budget = 60
     prop_list = Proposal.approved_and_ranked(proposal_quorum=1, next_superblock_max_budget=max_budget)
 
     maxgovobjdatasize = 469
-    sb = zeroonelib.create_superblock(prop_list, 72000, max_budget, misc.now(), maxgovobjdatasize)
+    sb = pyrklib.create_superblock(prop_list, 72000, max_budget, misc.now(), maxgovobjdatasize)
 
     # two proposals in the list, but...
     #assert len(prop_list) == 2
@@ -274,11 +274,11 @@ def test_superblock_size_limit(go_list_proposals):
 
 
 def test_deterministic_superblock_selection(go_list_superblocks):
-    from zerooned import ZeroOneDaemon
-    zerooned = ZeroOneDaemon.from_zeroone_conf(config.zeroone_conf)
+    from pyrkd import PyrkDaemon
+    pyrkd = PyrkDaemon.from_pyrk_conf(config.pyrk_conf)
 
     for item in go_list_superblocks:
-        (go, subobj) = GovernanceObject.import_gobject_from_zerooned(zerooned, item)
+        (go, subobj) = GovernanceObject.import_gobject_from_pyrkd(pyrkd, item)
 
     # highest hash wins if same -- so just order by hash
     sb = Superblock.find_highest_deterministic('542f4433e438bdd64697b8381fda1a7a9b7a111c3a4e32fad524d1821d820394')
