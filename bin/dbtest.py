@@ -9,22 +9,22 @@ import config
 from models import Superblock, Proposal, GovernanceObject, Setting, Signal, Vote, Outcome
 from models import VoteSignals, VoteOutcomes
 from peewee import PeeweeException  # , OperationalError, IntegrityError
-from zerooned import ZeroOneDaemon
-import zeroonelib
+from pyrkd import PyrkDaemon
+import pyrklib
 from decimal import Decimal
-zerooned = ZeroOneDaemon.from_zeroone_conf(config.zeroone_conf)
+pyrkd = PyrkDaemon.from_pyrk_conf(config.pyrk_conf)
 import misc
 # ==============================================================================
 # do stuff here
 
-pr = Proposal(
-    name='proposal7',
-    url='https://zeroonecentral.com/proposal7',
-    payment_address='nF3PndkR4vttZKUpYdYQjDCCrfsfhNGs6A',
-    payment_amount=39.23,
-    start_epoch=1483250400,
-    end_epoch=1491022800,
-)
+#pr = Proposal(
+#    name='proposal7',
+#    url='https://pyrkcentral.com/proposal7',
+#    payment_address='nF3PndkR4vttZKUpYdYQjDCCrfsfhNGs6A',
+#    payment_amount=39.23,
+#    start_epoch=1483250400,
+#    end_epoch=1491022800,
+#)
 
 # sb = Superblock(
 #     event_block_height = 62500,
@@ -33,13 +33,13 @@ pr = Proposal(
 # )
 
 
-# TODO: make this a test, mock 'zerooned' and tie a test block height to a
+# TODO: make this a test, mock 'pyrkd' and tie a test block height to a
 # timestamp, ensure only unit testing a within_window method
 #
 # also, create the `within_window` or similar method & use that.
 #
 bh = 131112
-bh_epoch = zerooned.block_height_to_epoch(bh)
+bh_epoch = pyrkd.block_height_to_epoch(bh)
 
 fudge = 72000
 window_start = 1483689082 - fudge
@@ -56,7 +56,7 @@ else:
     print("Within window, we're good!")
 
 # pdb.set_trace()
-# zerooned.get_object_list()
+# pyrkd.get_object_list()
 # ==============================================================================
 # pdb.set_trace()
 1
