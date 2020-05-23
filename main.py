@@ -14,7 +14,7 @@ sys.path.append(os.path.normpath(os.path.join(os.path.dirname(__file__), 'bin'))
 import sentinel
 sys.path.append(os.path.normpath(os.path.join(os.path.dirname(__file__), 'lib')))
 import config
-import zeroone_config
+import pyrk_config
 
 try:
     from builtins import input
@@ -65,14 +65,14 @@ def fix_masternode(data_folder):
             data_folder = input('Please, write the data folder path: ')
             return fix_masternode(data_folder)
 
-        print(colored('Make a copy of "wallet.dat" and "zeroone.conf" before continuing.\nThis program will try it best not to touch them, but just in case!', attrs=['bold']))
+        print(colored('Make a copy of "wallet.dat" and "pyrk.conf" before continuing.\nThis program will try it best not to touch them, but just in case!', attrs=['bold']))
         confirm = input('Once done, press [ENTER], or write cancel + [ENTER] to exit\n')
         if confirm.lower() == "cancel":
             return
 
         print(colored('Removing conflicting files', 'green'))
         for filename in os.listdir(data_folder):
-            if filename in ('wallet.dat', 'zeroone.conf'):
+            if filename in ('wallet.dat', 'pyrk.conf'):
                 continue
 
             realpath = os.path.join(data_folder, filename)
@@ -85,8 +85,8 @@ def fix_masternode(data_folder):
         print(colored('Done removing', 'green'))
         print('')
 
-        print(colored('Checking zeroone.conf contents', 'green'))
-        tokens = zeroone_config.ZeroOneConfig.tokenize(config.zeroone_conf)
+        print(colored('Checking pyrk.conf contents', 'green'))
+        tokens = pyrk_config.PyrkConfig.tokenize(config.pyrk_conf)
 
         # Check if needed tokens are there, set them if not
         tokens['rpcuser'] = tokens.get('rpcuser', random_string(18))
@@ -102,7 +102,7 @@ def fix_masternode(data_folder):
         except:
             r = None
             while r not in ('y', 'n'):
-                print(colored('It seems like your zeroone.conf is not setting the wallet as masternode!', 'red'))
+                print(colored('It seems like your pyrk.conf is not setting the wallet as masternode!', 'red'))
                 print(colored('If your are running a COLD wallet, sentinel must be executed on the remote MN, not at the collateral', 'red'))
                 print(colored('If you are using a remote MNs host like 01vps DO NOT continue, sentinel should be set there, not local!', 'red'))
                 r = input(colored('Continuing will set masternode=1, don\'t do it if this is a collateral wallet, [y/n]: ', 'red', attrs=['bold']))
@@ -119,21 +119,21 @@ def fix_masternode(data_folder):
 
         # It must have a masternodeprivkey
         if 'masternodeprivkey' not in tokens:
-            print(colored('Your zeroone.conf does not contain a \'masternodeprivkey\' entry, please set it up before opening your wallet', 'red'))
+            print(colored('Your pyrk.conf does not contain a \'masternodeprivkey\' entry, please set it up before opening your wallet', 'red'))
 
         # Rewrite config
-        with open(config.zeroone_conf, 'w') as fp:
+        with open(config.pyrk_conf, 'w') as fp:
             for k, v in tokens.items():
                 fp.write('{}={}\n'.format(k, v))
 
         print(colored('Done checking\n', 'green'))
-        print(colored('Please open your wallet (zerooned on linux) and wait for it completely load/open before continuing', attrs=['bold']))
+        print(colored('Please open your wallet (pyrkd on linux) and wait for it completely load/open before continuing', attrs=['bold']))
         input('Press [ENTER] to continue')
         print('')
 
         print(colored('Sentinel will automatically start in 15s', 'green', attrs=['bold']))
         print(colored('Until the wallet is fully synced, sentinel will show errors related to sync status, that\'s fine!', 'green'))
-        print(colored('If it says it can not connect, check your zeroone.conf settings', 'yellow'))
+        print(colored('If it says it can not connect, check your pyrk.conf settings', 'yellow'))
 
         r = 15
         while r > 0:
@@ -236,14 +236,14 @@ if __name__ == '__main__':
     if os.path.isfile(config.sentinel_config_file):
         print(colored('Using sentinel.conf: {}'.format(config.sentinel_config_file), 'green'))
 
-    print(colored('Using zeroone.conf: {}'.format(config.zeroone_conf), 'green'))
+    print(colored('Using pyrk.conf: {}'.format(config.pyrk_conf), 'green'))
 
     option = menu()
     if option == 1:
         run_sentinel()
     elif option == 2:
         # Use default data folder
-        data_folder = os.path.dirname(config.zeroone_conf)
+        data_folder = os.path.dirname(config.pyrk_conf)
         fix_masternode(data_folder)
 
 
