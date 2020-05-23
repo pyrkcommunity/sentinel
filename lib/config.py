@@ -4,7 +4,7 @@
 import argparse
 import sys
 import os
-from pyrk_config import PyrkOneConfig
+from pyrk_config import PyrkConfig
 
 default_sentinel_config = os.path.normpath(
     os.path.join(os.path.dirname(__file__), '../sentinel.conf')
