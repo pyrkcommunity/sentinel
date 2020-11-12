@@ -78,8 +78,7 @@ def attempt_superblock_creation(pyrkd):
     budget_max = pyrkd.get_superblock_budget_allocation(event_block_height)
     sb_epoch_time = pyrkd.block_height_to_epoch(event_block_height)
 
-    maxgovobjdatasize = pyrkd.govinfo['maxgovobjdatasize']
-    sb = pyrklib.create_superblock(proposals, event_block_height, budget_max, sb_epoch_time, maxgovobjdatasize)
+    sb = pyrklib.create_superblock(proposals, event_block_height, budget_max, sb_epoch_time)
     if not sb:
         printdbg("No superblock created, sorry. Returning.")
         return
