@@ -4,7 +4,7 @@ An all-powerful toolset for Pyrk.
 
 Sentinel is an autonomous agent for persisting, processing and automating Pyrk governance objects and tasks, and for expanded functions in upcoming Pyrk releases.
 
-Sentinel is implemented as a Python application that binds to a local version 0.12.3 pyrkd instance on each Pyrk Masternode.
+Sentinel is implemented as a Python application that binds to a local version 0.13.0+ pyrkd instance on each Pyrk Masternode.
 
 This guide covers installing Sentinel onto an existing Masternode in Ubuntu 14.04 / 16.04.
 
