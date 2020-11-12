@@ -12,7 +12,7 @@ default_sentinel_config = os.path.normpath(
 sentinel_config_file = os.environ.get('SENTINEL_CONFIG', default_sentinel_config)
 sentinel_cfg = PyrkConfig.tokenize(sentinel_config_file)
 
-sentinel_version = "1.2.0"
+sentinel_version = "1.3.0"
 min_pyrkd_proto_version_with_sentinel_ping = 70207
 
 def get_argparse():
