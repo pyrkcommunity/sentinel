@@ -1,9 +1,9 @@
 #!/bin/bash
 set -evx
 
-mkdir ~/.dashcore
+mkdir ~/.pyrkcore
 
 # safety check
-if [ ! -f ~/.dashcore/.dash.conf ]; then
-  cp share/dash.conf.example ~/.dashcore/dash.conf
+if [ ! -f ~/.pyrkcore/.pyrk.conf ]; then
+  cp share/pyrk.conf.example ~/.pyrkcore/pyrk.conf
 fi
