@@ -1,10 +1,10 @@
-# Dash Sentinel
+# Pyrk Sentinel
 
-[![Build Status](https://travis-ci.org/pyrkpay/sentinel.svg?branch=master)](https://travis-ci.org/pyrkpay/sentinel)
+[![Build Status](https://travis-ci.org/pyrkcommunity/sentinel.svg?branch=master)](https://travis-ci.org/pyrkcommunity/sentinel)
 
-> An automated governance helper for Dash Masternodes.
+> An automated governance helper for Pyrk Masternodes.
 
-Sentinel is an autonomous agent for persisting, processing and automating Dash governance objects and tasks. It is a Python application which runs alongside the DashCore instance on each Dash Masternode.
+Sentinel is an autonomous agent for persisting, processing and automating Pyrk governance objects and tasks. It is a Python application which runs alongside the PyrkCore instance on each Pyrk Masternode.
 
 ## Table of Contents
 - [Install](#install)
@@ -31,7 +31,7 @@ Make sure Python version 3.6.x or above is installed:
 
     python3 --version
 
-Make sure the local DashCore daemon running is at least version 0.15.0.
+Make sure the local PyrkCore daemon running is at least version 0.15.0.
 
     $ pyrkd --version | head -n1
 
@@ -39,7 +39,7 @@ Make sure the local DashCore daemon running is at least version 0.15.0.
 
 Clone the Sentinel repo and install Python dependencies.
 
-    $ git clone https://github.com/pyrkpay/sentinel.git && cd sentinel
+    $ git clone https://github.com/pyrkcommunity/sentinel.git && cd sentinel
     $ virtualenv -p $(which python3) ./venv
     $ ./venv/bin/pip install -r requirements.txt
 
@@ -83,11 +83,11 @@ To view debug output, set the `SENTINEL_DEBUG` environment variable to anything 
 
 ## Contributing
 
-Please follow the [DashCore guidelines for contributing](https://github.com/pyrkpay/pyrk/blob/master/CONTRIBUTING.md).
+Please follow the [PyrkCore guidelines for contributing](https://github.com/pyrkcommunity/pyrk/blob/master/CONTRIBUTING.md).
 
 Specifically:
 
-* [Contributor Workflow](https://github.com/pyrkpay/pyrk/blob/master/CONTRIBUTING.md#contributor-workflow)
+* [Contributor Workflow](https://github.com/pyrkcommunity/pyrk/blob/master/CONTRIBUTING.md#contributor-workflow)
 
     To contribute a patch, the workflow is as follows:
 
@@ -101,4 +101,4 @@ Specifically:
 
 ## License
 
-Released under the MIT license, under the same terms as DashCore itself. See [LICENSE](LICENSE) for more info.
+Released under the MIT license, under the same terms as PyrkCore itself. See [LICENSE](LICENSE) for more info.
