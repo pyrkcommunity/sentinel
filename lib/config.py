@@ -19,7 +19,7 @@ def get_pyrk_conf():
     else:
         home = os.environ.get('HOME')
 
-        pyrk_conf = os.path.join(home, ".pyrkcore/pyrk.conf")
+        pyrk_conf = os.path.join(home, ".pyrk/pyrk.conf")
         if sys.platform == 'darwin':
             pyrk_conf = os.path.join(home, "Library/Application Support/DashCore/pyrk.conf")
 

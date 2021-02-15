@@ -7,12 +7,12 @@ sys.path.append(os.path.normpath(os.path.join(os.path.dirname(__file__), '../../
 
 @pytest.fixture
 def valid_pyrk_address(network='mainnet'):
-    return 'yYe8KwyaUu5YswSYmB3q3ryx8XTUu9y7Ui' if (network == 'testnet') else 'XpjStRH8SgA6PjgebtPZqCa9y7hLXP767n'
+    return 'yR1MHCvAFqu6j9Upk9bVX6hFCB61RB7pFg' if (network == 'testnet') else 'PFYx2uGhEi7ZNWQQNsZJMF49z6pNmWFoQr'
 
 
 @pytest.fixture
 def invalid_pyrk_address(network='mainnet'):
-    return 'yYe8KwyaUu5YswSYmB3q3ryx8XTUu9y7Uj' if (network == 'testnet') else 'XpjStRH8SgA6PjgebtPZqCa9y7hLXP767m'
+    return 'yYe8KwyaUu5YswSYmB3q3ryx8XTU' if (network == 'testnet') else 'PFYx2uGhEi7ZNWQQNsZJMF49z6pNmW'
 
 
 @pytest.fixture
